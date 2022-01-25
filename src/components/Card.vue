@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="classGenerator">
+  <div class="card" :class="classGenerator" @click="$emit('click')">
     <div class="wifichip">
       <img class="wifi" v-if="classGenerator == '' || classGenerator == 'bitcoin'" src="../assets/wifi.svg">
       <img class="wifi-white" v-else src="../assets/wifi_white.svg">
@@ -8,10 +8,12 @@
       </div>
     </div>
     <img v-if="this.card.vendor" v-bind:src="this.imgSrc" class="vendor-img">
-    <p class="card-number">{{card.cardNumber}}</p>
+    <p class="card-number">{{number}}</p>
+    <!-- <p class="card-number">{{card.cardNumber}}</p> -->
     <div class="card-holder">
       <p class="card-holder-title">CARDHOLDER NAME</p>
-      <p v-if="this.card.cardHolder" class="card-holder-name">{{card.cardHolder.toUpperCase()}}</p>
+      <!-- <p v-if="this.card.cardHolder" class="card-holder-name">{{card.cardHolder.toUpperCase()}}</p> -->
+      <p class="card-holder-name">{{name}}</p>
     </div>
     <div class="valid-date">
       <p>VALID THRU</p>
@@ -24,17 +26,36 @@
 export default {
   props: {card: Object},
   computed: {
-    imgSrc() {
-      return require("../assets/" + (this.card.vendor) + ".svg")
-    },
     classGenerator(){
       return this.card.vendor
+    },
+    number() {
+      if(this.card.cardNumber == ''){
+        return 'XXXX XXXX XXXX XXXX'
+      } else {
+        return this.card.cardNumber.replace(/\d{4}(?=.)/g, '$& ');
+      }
+    },
+    number2() {
+      if(this.card.cardNumber.length){
+        return 'XXXX XXXX XXXX XXXX'
+      } else {
+        return this.card.cardNumber.replace(/\d{4}(?=.)/g, '$& ');
+      }
+    },
+    name() {
+      if(this.card.cardHolder == ''){
+        return 'FIRSTNAME LASTNAME'
+      } else {
+        return this.card.cardHolder.toUpperCase()
+      }
     }
   },
   methods: {},
   data(){return{}}
 }
 </script>
+
 
 <style scoped>
 
@@ -65,10 +86,10 @@ p {
   transition: filter 200ms ease;
 }
 
-.card:hover {
+/* .card:hover {
   filter: brightness(1.1);
   transition: filter 200ms ease;
-}
+} */
 
 .vendor-img {
   grid-area: vendor-img;
