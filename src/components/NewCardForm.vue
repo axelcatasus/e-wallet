@@ -1,8 +1,9 @@
 <template>
   <div class="form">
+    <Card :card="newCard" />
     <form 
-    @submit.prevent="$emit('formcard-submit-emit', newCard)"
-    @input="$emit('formcard-emit', newCard)"
+      @submit.prevent="submitCard"
+      @input="$emit('formcard-emit', newCard)"
     >
       <div class="num">
         <p>CARD NUMBER</p>
@@ -10,9 +11,8 @@
           class="number-input"
           type="text"
           inputmode="numeric"
-          minlength="19"
-          maxlength="19"
-          @input="numberSpacer"
+          minlength="16"
+          maxlength="16"
           v-model="newCard.cardNumber"
           onkeypress="return /[0-9]/i.test(event.key)"
           placeholder=""
@@ -40,7 +40,6 @@
             min="1"
             max="12"
             inputmode="numeric"
-            @input="focusNext"
             v-model="newCard.expireMonth"
             maxlength="2"
             onkeypress="return /[0-9]/i.test(event.key)"
@@ -54,7 +53,6 @@
             min="22"
             max="30"
             inputmode="numeric"
-            @input="focusNext"
             v-model="newCard.expireYear"
             minlength="2"
             maxlength="2"
@@ -70,7 +68,6 @@
             class="ccv-input"
             type="number"
             inputmode="numeric"
-            @input="focusNext"
             v-model="newCard.CCV"
             minlength="3"
             maxlength="3"
@@ -84,7 +81,6 @@
         <select 
           class="vendor-select"
           v-model="newCard.vendor"
-          @input="focusNext"
           required
         >
           <option value="bitcoin">BITCOIN INC</option>
@@ -94,22 +90,25 @@
         </select>
       </div>
       <div class="submit">
-        <button class="add-card-button">ADD CARD</button>
+        <button class="add-card-button" ref="addCardButton">ADD CARD</button>
+        <p>{{errorMessage}}</p>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import Card from "../components/Card.vue"
+
 export default {
+  components: {Card},
   props: {cards: Array},
   computed: {},
   methods: {
-    created() {
-      this.newCard.cardHolder = 'Firstname Lastname'
-    },
+    // created() {
+    //   this.newCard.cardHolder = 'Firstname Lastname'
+    // },
     numberSpacer(event){
-      this.focusNext(event)
       if(event.data != null){
         for(let number of this.spaceArray){
           if(number == this.newCard.cardNumber.length){
@@ -118,15 +117,38 @@ export default {
         }
       }
     },
-    focusNext(event){
-      for(let element of this.focusData){
-        if(element.inputName === event.target.className){
-          if(event.target.value.length === element.maxLength){
-            document.querySelector(element.nextFocus).focus()
-          }
-        }
+    submitCard(){
+      if (this.cards.find((number) => number.cardNumber == this.newCard.cardNumber)){
+        this.errorMessage ='Det finns redan ett kort med det numret!'
+      } else {
+        this.errorMessage = ""
+        this.$emit('formcard-submit-emit', {...this.newCard})
       }
-    },
+    }
+    // submitCard(){
+    //   this.errorMessage = 'You already added a card with that number.'
+    //   if(this.cards.find((number) => number.cardNumber != this.newCard.cardNumber)){
+    //     this.$emit('formcard-submit-emit', this.newCard)
+    //   } else {
+    //     this.errorMessage = 'You already added a card with that number.'
+    //   }
+    // }
+    // focusNext(event){
+    //     for(let el of this.focusData){
+    //       for(let ref of this.$refs){
+    //         if(ref.value.length == el.maxLength){
+    //           this.$refs[el.nextFocus]
+    //         }
+    //       }
+    //     }
+    //   },
+      // for(let element of this.focusData){
+      //   if(element.inputName === event.target.className){
+      //     if(event.target.value.length === element.maxLength){
+      //       document.querySelector(element.nextFocus).focus()
+      //     }
+      //   }
+      // }
   },
   data(){return{
     newCard:
@@ -139,35 +161,41 @@ export default {
           CCV: ''
         },
     spaceArray: [4, 9, 14],
+    errorMessage: '',
     months: ['01','02','03','04','05','06','07','08','09','10','11','12'],
-    focusData: 
-        [
-          {
-            inputName: 'number-input',
-            maxLength: 19,
-            nextFocus: '.name-input'
-          },
-          {
-            inputName: 'month-input',
-            maxLength: 2,
-            nextFocus: '.year-input'
-          },
-          {
-            inputName: 'year-input',
-            maxLength: 2,
-            nextFocus: '.ccv-input'
-          },
-          {
-            inputName: 'ccv-input',
-            maxLength: 3,
-            nextFocus: '.vendor-select'
-          },
-          {
-            inputName: 'vendor-select',
-            maxLength: null,
-            nextFocus: '.add-card-button'
-          },
-        ]
+    // focusData: 
+    //     [
+    //       {
+    //         inputName: 'numberInput',
+    //         maxLength: 19,
+    //         nextFocus: 'nameInput'
+    //       },
+    //       // {
+    //       //   inputName: 'number-input',
+    //       //   maxLength: 19,
+    //       //   nextFocus: '.name-input'
+    //       // },
+    //       {
+    //         inputName: 'monthInput',
+    //         maxLength: 2,
+    //         nextFocus: 'yearInput'
+    //       },
+    //       {
+    //         inputName: 'yearInput',
+    //         maxLength: 2,
+    //         nextFocus: 'ccvInput'
+    //       },
+    //       {
+    //         inputName: 'ccvInput',
+    //         maxLength: 3,
+    //         nextFocus: 'vendorSelect'
+    //       },
+    //       {
+    //         inputName: 'vendorSelect',
+    //         maxLength: null,
+    //         nextFocus: 'addCardButton'
+    //       },
+    //     ]
   }}
 }
 </script>
@@ -175,7 +203,7 @@ export default {
 <style scoped>
 
 input[type=number] {
--moz-appearance:textfield !important; /* Firefox */
+  -moz-appearance:textfield !important; /* Firefox */
 }
 
 input[type=number]::-webkit-inner-spin-button, 
@@ -285,7 +313,7 @@ button {
   border: 1px black solid;
   color: white;
   background: black;
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   transition: all 200ms ease;
 }
 

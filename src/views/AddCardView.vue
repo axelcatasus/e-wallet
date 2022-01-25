@@ -2,8 +2,8 @@
   <div class="add-card">
     <h1>ADD A NEW CARD</h1>
     <p class="newcard">NEW CARD</p>
-      <Card v-if="templateCheck" :card="templateCard" class="card"/>
-      <Card v-else :card="card" class="card"/>
+      <!-- <Card v-if="templateCheck" :card="templateCard" class="card"/>
+      <Card v-else :card="card" class="card"/> -->
       <NewCardForm 
         @formcard-emit="cardPreview" 
         @formcard-submit-emit="submitCard"
@@ -14,7 +14,7 @@
 
 <script>
 import NewCardForm from "../components/NewCardForm.vue"
-import Card from "../components/Card.vue"
+// import Card from "../components/Card.vue"
 
 export default {
   props:{cards: Array},
@@ -38,7 +38,8 @@ export default {
         CCV: ''
       },
   }},
-  components: {NewCardForm, Card},
+  components: {NewCardForm},
+  // components: {NewCardForm, Card},
   methods: {
     cardPreview(formCard){
       this.card = formCard
