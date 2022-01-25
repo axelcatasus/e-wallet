@@ -20,6 +20,7 @@
         > -->
         <input-masked
           class="number-input"
+          ref="input"
           type="text"
           maxlength="16"
           mask="1111 1111 1111 1111"
@@ -113,8 +114,6 @@
 import Card from "../components/Card.vue"
 import InputMasked from '@aymkdn/vue-input-masked'
 
-
-
 export default {
   components: {Card, InputMasked},
   props: {cards: Array},
@@ -135,6 +134,7 @@ export default {
     submitCard(){
       if (this.cards.find((number) => number.cardNumber == this.newCard.cardNumber)){
         this.errorMessage ='Det finns redan ett kort med det numret!'
+
       } else {
         this.errorMessage = ""
         this.$emit('formcard-submit-emit', {...this.newCard})
