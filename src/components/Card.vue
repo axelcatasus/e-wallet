@@ -1,7 +1,7 @@
 <template>
   <div class="card" :class="classGenerator" @click="$emit('click')">
     <div class="wifichip">
-      <img class="wifi" v-if="classGenerator == '' || classGenerator == 'bitcoin'" src="../assets/wifi.svg">
+      <img class="wifi" v-if="this.card.vendor == '' || this.card.vendor == 'bitcoin'" src="../assets/wifi.svg">
       <img class="wifi-white" v-else src="../assets/wifi_white.svg">
       <div class="chipcontainer">
         <img class="chip" src="../assets/chip.svg">
@@ -17,27 +17,26 @@
     </div>
     <div class="valid-date">
       <p>VALID THRU</p>
-      <p class="exp-date">{{card.expireMonth}}/{{card.expireYear}}</p>
+      <!-- <p class="exp-date">{{card.expireMonth}}/{{card.expireYear}}</p> -->
+      <p class="exp-date">{{month}}/{{year}}</p>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: {card: Object},
+  data(){return{
+    x: 'X'
+  }},
   computed: {
+    imgSrc() {
+      return require("../assets/" + (this.card.vendor) + ".svg")
+    },
     classGenerator(){
       return this.card.vendor
     },
     number() {
       if(this.card.cardNumber == ''){
-        return 'XXXX XXXX XXXX XXXX'
-      } else {
-        return this.card.cardNumber.replace(/\d{4}(?=.)/g, '$& ');
-      }
-    },
-    number2() {
-      if(this.card.cardNumber.length){
         return 'XXXX XXXX XXXX XXXX'
       } else {
         return this.card.cardNumber.replace(/\d{4}(?=.)/g, '$& ');
@@ -49,10 +48,22 @@ export default {
       } else {
         return this.card.cardHolder.toUpperCase()
       }
-    }
-  },
-  methods: {},
-  data(){return{}}
+    },
+    month() {
+      if(this.card.expireMonth == ''){
+        return 'MM'
+      } else {
+        return this.card.expireMonth
+      }
+    },
+    year() {
+      if(this.card.expireMonth == ''){
+        return 'YY'
+      } else {
+        return this.card.expireYear
+      }
+    },
+  }
 }
 </script>
 
@@ -61,12 +72,13 @@ export default {
 
 p {
   color: black;
+  
 }
 
 .card {
   max-width: 21rem;
   width: 90vw;
-  max-height: 13rem; 
+  max-height: calc(21rem * 0.618); 
   height: calc(90vw * 0.618);
   display: grid;
   /* max-width: 17.5rem; */
@@ -82,8 +94,9 @@ p {
   "card-number card-number card-number card-number "
   "card-holder . . valid-date";
   padding: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 15px;
+  box-shadow: rgba(7, 7, 7, 0.2) 0px 2px 15px;
   transition: filter 200ms ease;
+  
 }
 
 /* .card:hover {

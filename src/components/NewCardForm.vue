@@ -7,7 +7,7 @@
     >
       <div class="num">
         <p>CARD NUMBER</p>
-        <input
+        <!-- <input
           class="number-input"
           type="text"
           inputmode="numeric"
@@ -16,8 +16,19 @@
           v-model="newCard.cardNumber"
           onkeypress="return /[0-9]/i.test(event.key)"
           placeholder=""
+          required 
+        > -->
+        <input-masked
+          class="number-input"
+          type="text"
+          maxlength="16"
+          mask="1111 1111 1111 1111"
+          :placeholder-char="'XXXX XXXX XXXX XXXX'.split('')"
+          v-model="newCard.cardNumber"
+          placeholder='XXXX XXXX XXXX XXXX'
           required
-        >
+          >
+        </input-masked>
       </div>
       <div class="name-section">
         <p>CARDHOLDER NAME</p>
@@ -36,12 +47,13 @@
           <p>VALID THRU</p>
           <input 
             class="month-input"
-            type="number"
-            min="1"
-            max="12"
+            type="text"
+            minlength="2"
+            maxlength="2"
+            minvalue="1"
+            maxvalue="12"
             inputmode="numeric"
             v-model="newCard.expireMonth"
-            maxlength="2"
             onkeypress="return /[0-9]/i.test(event.key)"
             list="months"
             placeholder="MM"
@@ -49,9 +61,9 @@
           >
           <input
             class="year-input"
-            type="number"
-            min="22"
-            max="30"
+            type="text"
+            minvalue="22"
+            maxvalue="30"
             inputmode="numeric"
             v-model="newCard.expireYear"
             minlength="2"
@@ -99,9 +111,12 @@
 
 <script>
 import Card from "../components/Card.vue"
+import InputMasked from '@aymkdn/vue-input-masked'
+
+
 
 export default {
-  components: {Card},
+  components: {Card, InputMasked},
   props: {cards: Array},
   computed: {},
   methods: {
@@ -201,9 +216,9 @@ export default {
 </script>
 
 <style scoped>
-
+/* 
 input[type=number] {
-  -moz-appearance:textfield !important; /* Firefox */
+  -moz-appearance:textfield;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
@@ -213,7 +228,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: hidden;
   margin: 0;
   opacity: 1;
-}
+} */
 
 .form {
   display: flex;

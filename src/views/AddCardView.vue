@@ -1,6 +1,6 @@
 <template>
   <div class="add-card">
-    <h1>ADD A NEW CARD</h1>
+    <h1>ADD A NEW BANK CARD</h1>
     <p class="newcard">NEW CARD</p>
       <!-- <Card v-if="templateCheck" :card="templateCard" class="card"/>
       <Card v-else :card="card" class="card"/> -->

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <HomeView v-if="view=='HomeView'" :cards="cards" @change-view="view='AddCard'" @remove="removeCard" />
-    <AddCardView v-if="view=='AddCard'" :cards="cards" @addcard-emit="pushNewCard" />
+    <HomeView v-if="view=='HomeView'" :cards="cards" @change-view="view='AddCardView'" @remove="removeCard" />
+    <AddCardView v-if="view=='AddCardView'" :cards="cards" @addcard-emit="pushNewCard" />
   </div>
 </template>
 
@@ -12,7 +12,9 @@ import AddCardView from "./views/AddCardView.vue";
 export default {
   components: {HomeView, AddCardView},
   beforeMount() {
+    if(localStorage.cards){
     this.cards = JSON.parse(localStorage.getItem('cards'))
+    }
   },
   methods: {
     pushNewCard(newCard){
