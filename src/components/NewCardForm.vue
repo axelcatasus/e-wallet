@@ -3,33 +3,24 @@
     <Card :card="newCard" />
     <form 
       @submit.prevent="submitCard"
-      @input="$emit('formcard-emit', newCard)"
+      @input="inputHandler"
     >
       <div class="num">
         <p>CARD NUMBER</p>
-        <!-- <input
+        <input
           class="number-input"
+          :class="{ numerror : errorMessage != ''}"
+          ref="number"
           type="text"
           inputmode="numeric"
           minlength="16"
           maxlength="16"
           v-model="newCard.cardNumber"
-          onkeypress="return /[0-9]/i.test(event.key)"
+          @active="errorHandler"
+          onkeypress="return /[0-9, Enter]/i.test(event.key)"
           placeholder=""
           required 
-        > -->
-        <input-masked
-          class="number-input"
-          ref="input"
-          type="text"
-          maxlength="16"
-          mask="1111 1111 1111 1111"
-          :placeholder-char="'XXXX XXXX XXXX XXXX'.split('')"
-          v-model="newCard.cardNumber"
-          placeholder='XXXX XXXX XXXX XXXX'
-          required
-          >
-        </input-masked>
+        >
       </div>
       <div class="name-section">
         <p>CARDHOLDER NAME</p>
@@ -38,7 +29,7 @@
           type="text"
           maxlength="20"
           v-model="newCard.cardHolder"
-          onkeypress="return /[a-ö, ' ']/i.test(event.key)"
+          onkeypress="return /[a-ö, ' ', Enter]/i.test(event.key)"
           placeholder="FIRSTNAME LASTNAME"
           required
         >
@@ -46,45 +37,36 @@
       <div class="expiry-ccv">
         <div class="expiry">
           <p>VALID THRU</p>
-          <input 
-            class="month-input"
-            type="text"
-            minlength="2"
-            maxlength="2"
-            minvalue="1"
-            maxvalue="12"
-            inputmode="numeric"
+          <select 
+            :class=" { opaque: monthOpaque }"
+            @focus="monthOpaque = false"
             v-model="newCard.expireMonth"
-            onkeypress="return /[0-9]/i.test(event.key)"
-            list="months"
-            placeholder="MM"
             required
           >
-          <input
-            class="year-input"
-            type="text"
-            minvalue="22"
-            maxvalue="30"
-            inputmode="numeric"
+            <option value="" disabled hidden>MM</option>
+            <option v-for="month in this.months" :key="month" :value="month">{{month}}</option>
+          </select>
+          <select 
+            :class="{ opaque: yearOpaque }"
+            @focus="yearOpaque = false"
             v-model="newCard.expireYear"
-            minlength="2"
-            maxlength="2"
-            onkeypress="return /[0-9]/i.test(event.key)"
-            list="years"
-            placeholder="YY"
             required
           >
+            <option value="" disabled hidden>YY</option>
+            <option v-for="year in 10" :key="year" :value="year+21">{{21+year}}</option>
+          </select>
         </div>
         <div class="ccv">
           <p>CCV</p>
           <input
             class="ccv-input"
-            type="number"
+            type="text"
             inputmode="numeric"
             v-model="newCard.CCV"
+            minvalue="0"
             minlength="3"
             maxlength="3"
-            onkeypress="return /[0-9]/i.test(event.key)"
+            onkeypress="return /[0-9, Enter]/i.test(event.key)"
             required
           >
         </div>
@@ -102,9 +84,9 @@
           <option value="ninja">NINJA BANK</option>
         </select>
       </div>
+        <p class="error">{{errorMessage}}</p>
       <div class="submit">
         <button class="add-card-button" ref="addCardButton">ADD CARD</button>
-        <p>{{errorMessage}}</p>
       </div>
     </form>
   </div>
@@ -112,58 +94,28 @@
 
 <script>
 import Card from "../components/Card.vue"
-import InputMasked from '@aymkdn/vue-input-masked'
 
 export default {
-  components: {Card, InputMasked},
+  components: {Card},
   props: {cards: Array},
   computed: {},
   methods: {
-    // created() {
-    //   this.newCard.cardHolder = 'Firstname Lastname'
-    // },
-    numberSpacer(event){
-      if(event.data != null){
-        for(let number of this.spaceArray){
-          if(number == this.newCard.cardNumber.length){
-            this.newCard.cardNumber += ' '
-          }
-        }
+    inputHandler(){
+      this.$emit('formcard-emit', this.newCard)
+    },
+    errorHandler(){
+      if(this.errorMessage != ''){
+        this.errorMessage = ''
       }
     },
     submitCard(){
       if (this.cards.find((number) => number.cardNumber == this.newCard.cardNumber)){
-        this.errorMessage ='Det finns redan ett kort med det numret!'
-
+        this.errorMessage = `CARD ${this.newCard.cardNumber} ALREADY ADDED`
       } else {
         this.errorMessage = ""
         this.$emit('formcard-submit-emit', {...this.newCard})
       }
-    }
-    // submitCard(){
-    //   this.errorMessage = 'You already added a card with that number.'
-    //   if(this.cards.find((number) => number.cardNumber != this.newCard.cardNumber)){
-    //     this.$emit('formcard-submit-emit', this.newCard)
-    //   } else {
-    //     this.errorMessage = 'You already added a card with that number.'
-    //   }
-    // }
-    // focusNext(event){
-    //     for(let el of this.focusData){
-    //       for(let ref of this.$refs){
-    //         if(ref.value.length == el.maxLength){
-    //           this.$refs[el.nextFocus]
-    //         }
-    //       }
-    //     }
-    //   },
-      // for(let element of this.focusData){
-      //   if(element.inputName === event.target.className){
-      //     if(event.target.value.length === element.maxLength){
-      //       document.querySelector(element.nextFocus).focus()
-      //     }
-      //   }
-      // }
+    },
   },
   data(){return{
     newCard:
@@ -178,63 +130,33 @@ export default {
     spaceArray: [4, 9, 14],
     errorMessage: '',
     months: ['01','02','03','04','05','06','07','08','09','10','11','12'],
-    // focusData: 
-    //     [
-    //       {
-    //         inputName: 'numberInput',
-    //         maxLength: 19,
-    //         nextFocus: 'nameInput'
-    //       },
-    //       // {
-    //       //   inputName: 'number-input',
-    //       //   maxLength: 19,
-    //       //   nextFocus: '.name-input'
-    //       // },
-    //       {
-    //         inputName: 'monthInput',
-    //         maxLength: 2,
-    //         nextFocus: 'yearInput'
-    //       },
-    //       {
-    //         inputName: 'yearInput',
-    //         maxLength: 2,
-    //         nextFocus: 'ccvInput'
-    //       },
-    //       {
-    //         inputName: 'ccvInput',
-    //         maxLength: 3,
-    //         nextFocus: 'vendorSelect'
-    //       },
-    //       {
-    //         inputName: 'vendorSelect',
-    //         maxLength: null,
-    //         nextFocus: 'addCardButton'
-    //       },
-    //     ]
+    monthOpaque: true,
+    yearOpaque: true,
   }}
 }
 </script>
 
 <style scoped>
-/* 
-input[type=number] {
-  -moz-appearance:textfield;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  appearance: none;
-  display: hidden;
-  margin: 0;
-  opacity: 1;
-} */
 
 .form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.error {
+  position: fixed;
+  color: red;
+  font-size: 1rem;
+  margin-top: -1rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-align: center;
+  justify-self: center;
+}
+
+.numerror {
+  border: 2px red solid;
 }
 
 form {
@@ -254,7 +176,6 @@ p {
 
 input {
   height: 2rem;
-  appearance: none !important;
   border: 1px black solid;
   width: 21rem;
   padding: 0.5rem;
@@ -266,32 +187,41 @@ input {
 }
 
 input::placeholder {
-  color: black;
-}
-
-input:focus {
-  outline: none;
+  color: black
 }
 
 .expiry-ccv {
   display: grid;
   grid-template-areas: "expiry ccv";
-  width: 22.1rem;
+  /* width: 22.1rem; */
   justify-content: space-between;
 
 }
 
-.expiry input{
-  width: 3rem;
+.expiry select{
+  width: 4rem;
+  background: white url('../assets/arrow.svg') no-repeat center right .5rem;
   grid-area: "expiry";
   margin-right: .4rem;
-  text-align: center;
+  text-align: left;
+  background-size: 10px;
+  border: 1px black solid;
+  padding: .5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-family: 'PT Mono', monospace;
+  color: black;
+}
+
+.opaque {
+  color: #777777 !important;
 }
 
 .ccv input {
   grid-area: "ccv";
   width: 8.5rem;
 }
+
 
 .vendor select{
   width: 100%;
