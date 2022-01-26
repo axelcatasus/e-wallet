@@ -51,6 +51,22 @@ export default {
       CCV: '666'
       },
       {
+      vendor: "blockchain", 
+      cardNumber: "0000 0000 0000 0001", 
+      cardHolder: "RIKARD VIRTA", 
+      expireMonth: "3", 
+      expireYear: "23", 
+      CCV: '666'
+      },
+      {
+      vendor: "blockchain", 
+      cardNumber: "0000 0000 0000 0002", 
+      cardHolder: "RIKARD VIRTA", 
+      expireMonth: "3", 
+      expireYear: "23", 
+      CCV: '666'
+      },
+      {
       vendor: "evil", 
       cardNumber: "1337 1337 1337 1337", 
       cardHolder: "OSCAR ARRHENIUS", 

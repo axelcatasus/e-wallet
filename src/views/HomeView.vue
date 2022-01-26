@@ -3,8 +3,8 @@
     <h1>E-WALLET</h1>
     <div class="active-card" v-if="activeCard">
       <p>ACTIVE CARD</p>
-      <Card :card="activeCard"/>
-      <p class="remove-active" @click="showModal = true">REMOVE CARD</p>
+      <Card :card="activeCard" :class="{'active-card-focus' : activeCardFocus}"/>
+      <p class="remove-active" @click="showModal = true">REMOVE ACTIVE CARD</p>
       <div v-if="showModal" class="remove-modal-mask" @click.self="showModal = false">
         <div class="remove-modal-content">
           <p>REMOVE CARD?</p>
@@ -32,11 +32,15 @@ export default {
   methods:{
     makeActive(card){
       this.activeCard = card
+      this.activeCardFocus = true
+      setTimeout(() => {this.activeCardFocus = false}, 400)
     },
     removeActive(){
       this.$emit('remove', this.activeCard)
       this.activeCard = this.cards[0]
       this.showModal = false
+      this.activeCardFocus = true
+      setTimeout(() => {this.activeCardFocus = false}, 400)
     }
   },
   computed:{
@@ -47,6 +51,7 @@ export default {
     data(){return{
       activeCard: this.cards[0],
       showModal: false,
+      activeCardFocus: false
     }}
 
 }
@@ -57,7 +62,6 @@ export default {
 .home {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 }
 
@@ -66,11 +70,8 @@ h1 {
 }
 
 .remove-active {
-  /* position: fixed; */
-  /* font-size: 2rem; */
   color: red;
-  margin: 0;
-  /* right: 15rem; */
+  margin-top: 0.25rem;
 }
 
 .remove-modal-mask{
@@ -91,10 +92,10 @@ h1 {
   justify-content: center;
   background-color: #fefefe;
   border-radius: 8px;
-  margin: 35% auto;
+  margin: 32vh auto;
   padding: 1rem;
   border: 1px solid #888;
-  width: 40%;
+  width: 12rem;
 }
 
 .remove-modal-content p {
@@ -141,14 +142,22 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: all 200ms ease;
+}
+
+.active-card div {
+  transition: all 400ms ease;
+}
+
+.active-card div:active {
+  filter: brightness(1.2);
+  transition: all 400ms ease;
+  transform: scale(1.05)
 }
 
 .add-button {
   position: sticky;
   justify-self: flex-end;
-  /* bottom: 1rem; */
-  /* margin-top: 14rem; */
+  bottom: 1rem;
   width: 22.5rem;
   height: 3.5rem;
   font-size: 1.2rem;
@@ -161,7 +170,7 @@ p {
 }
 
 .add-button:hover {
-  background: rgba(240, 240, 240, 0.8);
+  background: rgba(240, 240, 240);
   transition: all 400ms ease;
 }
 
@@ -172,83 +181,22 @@ p {
   margin-bottom: 13rem;
 }
 
-/* .card-stack div {
-  position: relative;
-  overflow-x: visible;
+.active-card-focus {
+  animation: activated ease 400ms;
 }
-
-.card-stack {
-  max-height: 20rem;
-  padding-top: 1rem;
-  bottom: 6rem;
-  width: 100%;
+@keyframes activated {
+  0% {
+    filter: brightness(1);
+    transform: scale(1)
+  }
+  50% {
+    filter: brightness(1.2);
+    transform: scale(1.02)
+  }
+  100% {
+    filter: brightness(1);
+    transform: scale(1)
+  }
 }
-
-.card-stack > div:hover {
-  transform: translateY(-.25rem);
-  transition: all 200ms ease;
-}
-
-.card-stack > div{
-  transition: all 200ms ease;
-  margin: 0 auto;
-}
-
-.card-stack div:nth-of-type(1){
-  position: static;
-}
-
-.card-stack div:nth-of-type(2){
-  position: relative;
-  top: -12.5rem;
-}
-
-.card-stack div:nth-of-type(3){
-  position: relative;
-  top: -25rem;
-}
-
-.card-stack div:nth-of-type(4){
-  position: relative;
-  top: -37.5rem;
-}
-
-.card-stack div:nth-of-type(5){
-  position: relative;
-  top: -50rem;
-}
-
-.card-stack div:nth-of-type(6){
-  position: relative;
-  top: -62.5rem;
-}
-
-.card-stack div:nth-of-type(7){
-  position: relative;
-  top: -78rem;
-}
-.card-stack div:nth-of-type(8){
-  position: relative;
-  top: -90.5rem;
-}
-.card-stack div:nth-of-type(9){
-  position: relative;
-  top: -103rem;
-}
-.card-stack div:nth-of-type(10){
-  position: relative;
-  top: -115.5rem;
-}
-.card-stack div:nth-of-type(11){
-  position: relative;
-  top: -128rem;
-}
-.card-stack div:nth-of-type(12){
-  position: relative;
-  top: -140.5rem;
-} */
-
-
-
 
 </style>

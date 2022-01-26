@@ -2,8 +2,6 @@
   <div class="add-card">
     <h1>ADD A NEW BANK CARD</h1>
     <p class="newcard">NEW CARD</p>
-      <!-- <Card v-if="templateCheck" :card="templateCard" class="card"/>
-      <Card v-else :card="card" class="card"/> -->
       <NewCardForm 
         @formcard-emit="cardPreview" 
         @formcard-submit-emit="submitCard"
@@ -14,7 +12,6 @@
 
 <script>
 import NewCardForm from "../components/NewCardForm.vue"
-// import Card from "../components/Card.vue"
 
 export default {
   props:{cards: Array},
@@ -39,7 +36,6 @@ export default {
       },
   }},
   components: {NewCardForm},
-  // components: {NewCardForm, Card},
   methods: {
     cardPreview(formCard){
       this.card = formCard
@@ -52,7 +48,8 @@ export default {
 </script>
 
 <style>
-.add-card{
+
+.add-card {
   display: flex;
   flex-direction: column;
   align-items: center;
