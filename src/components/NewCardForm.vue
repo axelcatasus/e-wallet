@@ -39,7 +39,7 @@
           <p>VALID THRU</p>
           <select 
             :class=" { opaque: monthOpaque }"
-            @focus="monthOpaque = false"
+            @click="monthOpaque = false"
             v-model="newCard.expireMonth"
             required
           >
@@ -48,7 +48,7 @@
           </select>
           <select 
             :class="{ opaque: yearOpaque }"
-            @focus="yearOpaque = false"
+            @click="yearOpaque = false"
             v-model="newCard.expireYear"
             required
           >
