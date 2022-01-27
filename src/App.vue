@@ -34,54 +34,32 @@ export default {
 
   data(){return{
     view: "HomeView",
-    cards: [{
+    cards: [
+      {
       vendor: "bitcoin", 
-      cardNumber: "1234 5678 1234 5678", 
+      cardNumber: "1234567812345678", 
       cardHolder: "AXEL CATASÚS", 
-      expireMonth: "3", 
-      expireYear: "60", 
-      CCV: '666'
-      },
-      {
-      vendor: "blockchain", 
-      cardNumber: "0000 0000 0000 0000", 
-      cardHolder: "RIKARD VIRTA", 
-      expireMonth: "3", 
-      expireYear: "23", 
-      CCV: '666'
-      },
-      {
-      vendor: "blockchain", 
-      cardNumber: "0000 0000 0000 0001", 
-      cardHolder: "RIKARD VIRTA", 
-      expireMonth: "3", 
-      expireYear: "23", 
-      CCV: '666'
-      },
-      {
-      vendor: "blockchain", 
-      cardNumber: "0000 0000 0000 0002", 
-      cardHolder: "RIKARD VIRTA", 
-      expireMonth: "3", 
-      expireYear: "23", 
+      expireMonth: "03", 
+      expireYear: "30", 
       CCV: '666'
       },
       {
       vendor: "evil", 
-      cardNumber: "1337 1337 1337 1337", 
-      cardHolder: "OSCAR ARRHENIUS", 
-      expireMonth: "13", 
-      expireYear: "37", 
+      cardNumber: "9876543210123456", 
+      cardHolder: "LAVID DUNDHOLM", 
+      expireMonth: "05", 
+      expireYear: "23", 
       CCV: '666'
       },
       {
-      vendor: "ninja", 
-      cardNumber: "1338 1337 1337 1337", 
-      cardHolder: "IDAN CHEAPROOT", 
-      expireMonth: "13", 
-      expireYear: "37", 
+      vendor: "blockchain", 
+      cardNumber: "8008580085800500", 
+      cardHolder: "VIKARD RIRTA", 
+      expireMonth: "07", 
+      expireYear: "23", 
       CCV: '666'
-      }]
+      },
+      ]
   }}
 }
 </script>

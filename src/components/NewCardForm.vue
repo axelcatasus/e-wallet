@@ -16,7 +16,7 @@
           minlength="16"
           maxlength="16"
           v-model="newCard.cardNumber"
-          @active="errorHandler"
+          @input="errorHandler"
           onkeypress="return /[0-9, Enter]/i.test(event.key)"
           placeholder=""
           required 

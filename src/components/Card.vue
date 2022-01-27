@@ -174,7 +174,7 @@ p {
   background: linear-gradient(248.52deg, rgba(0, 0, 0, 0.15) 1.49%, rgba(0, 0, 0, 0) 100%), #8B58F9;
 }
 .blockchain p {
-  color: rgb(211, 211, 211);
+  color: rgb(230, 230, 230);
 }
 
 .evil {

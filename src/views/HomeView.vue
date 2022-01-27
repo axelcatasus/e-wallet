@@ -17,7 +17,7 @@
     </div>
       <p class="card-stack-label" v-if="this.cards.length > 1">YOUR CARDS</p>
     <div class="card-stack">
-      <Card v-for="card in filterActive" :key="card.cardNumber" @click="()=>makeActive(card)" :card="card"/>
+      <Card v-for="card in filterActive" :key="card.cardNumber" @click="makeActive(card)" :card="card"/>
     </div>
       <button class="add-button" @click="$emit('change-view')">ADD A NEW CARD</button>
   </div>
@@ -178,7 +178,7 @@ p {
   display: grid;
   margin-top: 1rem;
   grid-auto-rows: 2.5rem;
-  margin-bottom: 13rem;
+  margin-bottom: 14rem;
 }
 
 .active-card-focus {
@@ -198,5 +198,6 @@ p {
     transform: scale(1)
   }
 }
+
 
 </style>
