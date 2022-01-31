@@ -106,6 +106,7 @@ h1 {
 
 .remove-modal-content button {
   margin: .5rem;
+  font-size: 1rem;
   width: 4rem;
   height: 3rem;
   font-family: 'PT Mono', monospace;
@@ -114,12 +115,6 @@ h1 {
   color: black;
   background: white;
 }
-
-.remove-modal-content button:hover {
-  background: #EEEEEE;
-  font-weight: bold;
-}
-
 
 .remove-active:hover {
   cursor: pointer;

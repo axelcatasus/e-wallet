@@ -9,15 +9,12 @@
     </div>
     <img v-if="this.card.vendor" v-bind:src="this.imgSrc" class="vendor-img">
     <p class="card-number">{{number}}</p>
-    <!-- <p class="card-number">{{card.cardNumber}}</p> -->
     <div class="card-holder">
       <p class="card-holder-title">CARDHOLDER NAME</p>
-      <!-- <p v-if="this.card.cardHolder" class="card-holder-name">{{card.cardHolder.toUpperCase()}}</p> -->
       <p class="card-holder-name">{{name}}</p>
     </div>
     <div class="valid-date">
       <p>VALID THRU</p>
-      <!-- <p class="exp-date">{{card.expireMonth}}/{{card.expireYear}}</p> -->
       <p class="exp-date">{{month}}/{{year}}</p>
     </div>
   </div>
@@ -25,9 +22,6 @@
 <script>
 export default {
   props: {card: Object},
-  data(){return{
-    x: 'X'
-  }},
   computed: {
     imgSrc() {
       return require("../assets/" + (this.card.vendor) + ".svg")
@@ -72,7 +66,6 @@ export default {
 
 p {
   color: black;
-  
 }
 
 .card {
@@ -81,11 +74,6 @@ p {
   max-height: calc(21rem * 0.618); 
   height: calc(90vw * 0.618);
   display: grid;
-  /* max-width: 17.5rem; */
-  /* max-height: 10rem; */
-  /* width: 21rem; */
-  /* height: 12rem; */
-  /* aspect-ratio: 3.5/2; */
   border-radius: 8px;
   background: linear-gradient(248.3deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 100%), #D0D0D0;
   text-shadow: 1px 0px 0px rgba(0, 0, 0, 0.15), 0px 1px 0px rgba(0, 0, 0, 0.05), -1px 0px 0px rgba(0, 0, 0, 0.05), 0px -1px 0px rgba(0, 0, 0, 0.15);
@@ -95,14 +83,12 @@ p {
   "card-holder . . valid-date";
   padding: 1rem;
   box-shadow: rgba(7, 7, 7, 0.2) 0px 2px 15px;
-  transition: filter 200ms ease;
-  
+  transition: filter 200ms ease; 
 }
 
-/* .card:hover {
-  filter: brightness(1.1);
-  transition: filter 200ms ease;
-} */
+.card p {
+  color: black;
+}
 
 .vendor-img {
   grid-area: vendor-img;
@@ -111,7 +97,7 @@ p {
   height: 5rem;
 }
 
-.card-number{
+.card-number {
   grid-area: card-number;
   font-size: 1.8rem;
   text-align: center;
@@ -119,18 +105,18 @@ p {
   align-self: center;
 }
 
-.card-holder{
+.card-holder {
   grid-area: card-holder;
   align-self: flex-end;
 }
 
-.card-holder-name, .exp-date{
+.card-holder-name, .exp-date {
   font-size: 1.2rem;
   margin: 0 0 2rem 0;
   line-height: 0;
 }
 
-.valid-date{
+.valid-date {
   grid-area: valid-date;
   text-align: right;
   align-self: flex-end;
@@ -170,6 +156,10 @@ p {
   background: linear-gradient(248.04deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 99.07%), #FFAE34;
 }
 
+.bitcoin {
+  color: rgb(230, 230, 230);
+}
+
 .blockchain {
   background: linear-gradient(248.52deg, rgba(0, 0, 0, 0.15) 1.49%, rgba(0, 0, 0, 0) 100%), #8B58F9;
 }
@@ -180,6 +170,7 @@ p {
 .evil {
   background: linear-gradient(248.3deg, rgba(0, 0, 0, 0.16) 0%, rgba(0, 0, 0, 0) 100%), #F33355;
 }
+
 .evil p {
   color: rgb(211, 211, 211);
   

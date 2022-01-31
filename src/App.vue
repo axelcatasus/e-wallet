@@ -1,16 +1,19 @@
 <template>
   <div id="app">
+    <DarkMode class="darkmode"/>
     <HomeView v-if="view=='HomeView'" :cards="cards" @change-view="view='AddCardView'" @remove="removeCard" />
-    <AddCardView v-if="view=='AddCardView'" :cards="cards" @addcard-emit="pushNewCard" />
+    <AddCardView v-if="view=='AddCardView'" :cards="cards" @addcard-emit="pushNewCard" @back="view='HomeView'" />
   </div>
 </template>
 
 <script>
 import HomeView from "./views/HomeView.vue";
 import AddCardView from "./views/AddCardView.vue";
+import DarkMode from "./components/DarkMode.vue"
 
 export default {
-  components: {HomeView, AddCardView},
+  // components: {HomeView, AddCardView},
+  components: {HomeView, AddCardView, DarkMode},
   beforeMount() {
     if(localStorage.cards){
     this.cards = JSON.parse(localStorage.getItem('cards'))
@@ -72,8 +75,12 @@ html {
   overflow: hidden;
 }
 
-#app{
-  padding: 0rem;
+.darkmode {
+  position: fixed;
+  display: sticky;
+  transform: rotate(90deg);
+  margin: 1.5rem auto;
+  right: 1rem;
 }
 
 h1 {

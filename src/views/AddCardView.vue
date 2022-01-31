@@ -1,6 +1,7 @@
 <template>
   <div class="add-card">
-    <h1>ADD A NEW BANK CARD</h1>
+      <a @click="$emit('back')" class="back">&#60;</a>
+      <h1 class="heading">ADD A NEW BANK CARD</h1>
     <p class="newcard">NEW CARD</p>
       <NewCardForm 
         @formcard-emit="cardPreview" 
@@ -54,6 +55,18 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.back {
+  position: fixed;
+  top: 1rem;
+  left: 1.5rem;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.back:hover {
+  cursor: pointer;
 }
 
 .card {
